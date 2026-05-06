@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0e0e0f;
+  --ink2: #1c1c1e;
+  --ink3: #2a2a2d;
+  --chalk: #f4f2ed;
+  --chalk2: #e8e5de;
+  --chalk3: #c8c4bb;
+  --accent: #e8611a;
+  --accent2: #f07a38;
+  --line: rgba(255, 255, 255, 0.07);
+  --line2: rgba(255, 255, 255, 0.12);
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'Playfair Display', serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--ink);
+  color: var(--chalk);
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--chalk);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(232, 97, 26, 0.3), 0 0 40px rgba(232, 97, 26, 0.1);
+  }
+
+  .glow-orange-text {
+    text-shadow: 0 0 20px rgba(232, 97, 26, 0.5);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-orange text-brand-bg px-8 py-3.5 font-medium transition-colors duration-200 hover:bg-brand-orange-light;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-brand-text-secondary px-0 py-3.5 font-mono transition-colors duration-200 hover:text-brand-text;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  .card-hover {
+    @apply transition-colors duration-200 hover:bg-brand-bg-tertiary;
+  }
+}
