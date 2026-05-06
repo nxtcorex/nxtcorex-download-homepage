@@ -22,7 +22,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'anycast.ren - 每一字节 极速抵达',
-  description: '基于 Cloudflare 网络的全球加速服务，310+ 边缘节点，99.99% 服务可用性',
+  description: '基于 Cloudflare 网络的全球加速服务，310+ 边缘节点',
 }
 
 export default function RootLayout({
