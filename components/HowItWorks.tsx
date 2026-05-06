@@ -8,16 +8,6 @@ const steps = [
   },
   {
     number: '02',
-    title: '边缘缓存命中',
-    description: 'Cloudflare 边缘节点持久化缓存文件副本。命中率超过 95% 的场景下，流量无需回源，直接在最近机房响应。',
-  },
-  {
-    number: '03',
-    title: 'Argo 智能路由',
-    description: '缓存未命中时，Argo 实时探测骨干链路拥塞情况，选择延迟最低的内网隧道回源，绕过公网抖动。',
-  },
-  {
-    number: '04',
     title: 'HTTP/3 & QUIC 传输',
     description: '全链路启用 HTTP/3，消除队头阻塞，在弱网与高丢包环境下依然保持稳定的吞吐量。',
   },

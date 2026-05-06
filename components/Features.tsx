@@ -55,9 +55,6 @@ export default function Features() {
         <h2 className="text-4xl lg:text-5xl font-serif font-normal leading-tight mb-5">
           为大文件传输<br />专门设计
         </h2>
-        <p className="text-base font-light text-brand-text-secondary leading-[1.75] max-w-[480px] mb-16">
-          从固件包到数据集，anycast.ren 在 Cloudflare 基础设施之上构建了专属的加速层。
-        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07]">
           {features.map((feature, index) => (
