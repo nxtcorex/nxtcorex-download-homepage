@@ -35,14 +35,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-4 text-[11px] font-mono text-brand-text-secondary/35 text-center">
+        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 text-[11px] font-mono text-brand-text-secondary/35 text-center lg:text-left">
           <p>
             © 2026 anycast.ren. Infrastructure by{' '}
             <a href="https://cloudflare.com" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
               Cloudflare
             </a>.
           </p>
-          <p>AS13335 / 310 PoPs / HTTP3</p>
           <p>
             此网页开源于{' '}
             <a href="https://github.com/nxtcorex/anycast-homepage" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
