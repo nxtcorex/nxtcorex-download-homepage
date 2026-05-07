@@ -2,7 +2,7 @@
 
 export default function Globe() {
   return (
-    <div className="relative w-[560px] h-[560px] translate-x-20 translate-y-5" style={{ perspective: '1000px' }}>
+    <div className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] lg:w-[560px] lg:h-[560px] lg:translate-x-20 lg:translate-y-5" style={{ perspective: '1000px' }}>
       <div className="absolute w-[320px] h-[320px] border border-brand-orange/15 animate-[pulse-expand_4s_ease-out_infinite]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
       <div className="absolute w-[320px] h-[320px] border border-brand-orange/15 animate-[pulse-expand_4s_ease-out_infinite_1.3s]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
       <div className="absolute w-[320px] h-[320px] border border-brand-orange/15 animate-[pulse-expand_4s_ease-out_infinite_2.6s]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>

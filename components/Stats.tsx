@@ -22,11 +22,11 @@ export default function Stats() {
   return (
     <div className="bg-brand-bg-secondary border-t border-b border-white/[0.07]">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3">
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="py-8 px-12 border-r border-white/[0.07] last:border-r-0 text-center"
+              className="py-8 px-12 border-r border-white/[0.07] last:border-r-0 sm:border-r border-b sm:border-b-0 last:border-b-0 text-center"
             >
               <div className="text-4xl font-mono font-light text-brand-text tracking-tight leading-none mb-1.5">
                 {stat.value}<span className="text-brand-orange">{stat.suffix}</span>

@@ -46,13 +46,13 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="bg-brand-bg-secondary py-32 px-5 lg:px-20">
+    <section id="features" className="bg-brand-bg-secondary py-20 md:py-32 px-5 lg:px-20">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3 mb-5 justify-center lg:justify-start">
           <span className="text-[11px] text-brand-orange font-mono tracking-[0.12em] uppercase">核心能力</span>
           <span className="flex-1 h-px max-w-10 bg-brand-orange/40"></span>
         </div>
-        <h2 className="text-4xl lg:text-5xl font-serif font-normal leading-tight mb-5">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal leading-tight mb-5 text-center lg:text-left">
           为大文件传输<br />专门设计
         </h2>
 

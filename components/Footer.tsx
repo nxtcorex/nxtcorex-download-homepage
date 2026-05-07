@@ -6,8 +6,8 @@ export default function Footer() {
   return (
     <footer className="bg-brand-bg-secondary border-t border-white/[0.07] py-16 px-5 lg:px-20">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-20 pb-12 border-b border-white/[0.07] mb-8">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 pb-12 border-b border-white/[0.07] mb-8 text-center lg:text-left">
+          <div className="flex flex-col items-center lg:items-start">
             <span className="text-base font-mono text-brand-text mb-4 block">
               anycast<span className="text-brand-orange">.</span>ren
             </span>
@@ -16,7 +16,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-center lg:justify-end">
             <div>
               <h4 className="text-[11px] font-mono text-brand-text-secondary tracking-[0.1em] uppercase mb-5">
                 文档
@@ -35,14 +35,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] font-mono text-brand-text-secondary/35">
+        <div className="flex flex-col items-center gap-4 text-[11px] font-mono text-brand-text-secondary/35 text-center">
           <p>
-            © 2026 anycast.ren — All rights reserved. Infrastructure by{' '}
+            © 2026 anycast.ren. Infrastructure by{' '}
             <a href="https://cloudflare.com" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
               Cloudflare
             </a>.
           </p>
           <p>AS13335 / 310 PoPs / HTTP3</p>
+          <p>
+            此网页开源于{' '}
+            <a href="https://github.com/nxtcorex/anycast-homepage" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
+              GitHub
+            </a>.
+          </p>
         </div>
       </div>
     </footer>

@@ -15,20 +15,20 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-32 px-5 lg:px-20">
+    <section id="how-it-works" className="py-20 md:py-32 px-5 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-3 mb-5">
           <span className="text-[11px] text-brand-orange font-mono tracking-[0.12em] uppercase">工作原理</span>
           <span className="flex-1 h-px max-w-10 bg-brand-orange/40"></span>
         </div>
-        <h2 className="text-4xl lg:text-5xl font-serif font-normal leading-tight mb-16">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal leading-tight mb-10 md:mb-16">
           请求如何在<br />毫秒内找到最近节点
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <div className="space-y-0">
             {steps.map((step, index) => (
-              <div key={step.number} className="grid grid-cols-[64px_1fr] gap-6 py-8 border-t border-white/[0.07] first:border-t-0">
+              <div key={step.number} className="grid grid-cols-[48px_1fr] sm:grid-cols-[64px_1fr] gap-4 sm:gap-6 py-6 sm:py-8 border-t border-white/[0.07] first:border-t-0">
                 <div className="text-[11px] font-mono text-brand-text-secondary tracking-[0.08em] pt-1">
                   {step.number}
                 </div>
@@ -44,7 +44,7 @@ export default function HowItWorks() {
             ))}
           </div>
 
-          <div className="bg-brand-bg-secondary border border-white/[0.12] p-8 relative overflow-hidden">
+          <div className="bg-brand-bg-secondary border border-white/[0.12] p-5 sm:p-6 md:p-8 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(232,97,26,0.05)_0%,transparent_60%)] pointer-events-none"></div>
             <svg viewBox="0 0 380 300" className="w-full" fill="none">
               <line x1="190" y1="50" x2="80" y2="150" stroke="rgba(232,97,26,0.35)" strokeWidth="1" strokeDasharray="4,3" />
@@ -84,7 +84,7 @@ export default function HowItWorks() {
               <circle cx="340" cy="250" r="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.7" />
               <text x="340" y="254" textAnchor="middle" fill="rgba(200,196,187,0.5)" fontFamily="monospace" fontSize="7">CGK</text>
             </svg>
-            <div className="inline-flex items-center gap-2.5 bg-brand-bg-secondary/80 border border-white/[0.12] px-4 py-2.5 mt-6">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 bg-brand-bg-secondary/80 border border-white/[0.12] px-3 sm:px-4 py-2 sm:py-2.5 mt-4 sm:mt-6">
               <span className="w-2 h-2 bg-[#f6821f]"></span>
               <span className="text-xs font-mono text-brand-text-secondary tracking-wide">
                 Powered by Cloudflare Network — AS13335

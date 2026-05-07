@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 
 const menuItems = [
   { label: '原理', href: '#how-it-works' },
@@ -12,6 +13,23 @@ const menuItems = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    const anchor = href.replace('#', '')
+    
+    if (pathname !== '/') {
+      router.push('/' + href)
+    } else {
+      const element = document.getElementById(anchor)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+    setIsMenuOpen(false)
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-bg/85 backdrop-blur-lg border-b border-white/[0.07]">
@@ -31,6 +49,7 @@ export default function Navbar() {
                 <a
                   key={item.label}
                   href={item.href}
+                  onClick={(e) => handleAnchorClick(e, item.href)}
                   className="text-[13px] text-brand-text-secondary hover:text-brand-text transition-colors duration-200 tracking-wide"
                 >
                   {item.label}
@@ -94,7 +113,7 @@ export default function Navbar() {
                     key={item.label}
                     href={item.href}
                     className="text-sm text-brand-text-secondary hover:text-brand-text transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => handleAnchorClick(e, item.href)}
                   >
                     {item.label}
                   </a>
