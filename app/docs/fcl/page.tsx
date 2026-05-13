@@ -27,17 +27,23 @@ export default function FCLPage() {
   const [selectedVersion, setSelectedVersion] = useState<string>('latest')
   const [selectedArch, setSelectedArch] = useState<string>('all')
   const [showVersionDropdown, setShowVersionDropdown] = useState(false)
+  const [showArchDropdown, setShowArchDropdown] = useState(false)
   const [loading, setLoading] = useState(true)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const archDropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchReleases()
+    document.title = 'FCL启动器下载 - nxtcorex下载加速'
   }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowVersionDropdown(false)
+      }
+      if (archDropdownRef.current && !archDropdownRef.current.contains(event.target as Node)) {
+        setShowArchDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -136,17 +142,33 @@ export default function FCLPage() {
                 )}
               </div>
 
-              <div>
+              <div className="relative" ref={archDropdownRef}>
                 <label className="text-sm text-brand-text-secondary block mb-2">架构</label>
-                <select
-                  value={selectedArch}
-                  onChange={(e) => setSelectedArch(e.target.value)}
-                  className="w-full sm:w-40 bg-brand-bg border border-white/[0.12] rounded px-4 py-2.5 text-sm text-brand-text"
+                <button
+                  onClick={() => setShowArchDropdown(!showArchDropdown)}
+                  className="w-full sm:w-40 bg-brand-bg border border-white/[0.12] rounded px-4 py-2.5 text-sm text-brand-text flex items-center justify-between"
                 >
-                  {archOptions.map((arch) => (
-                    <option key={arch} value={arch}>{archLabels[arch]}</option>
-                  ))}
-                </select>
+                  <span>{archLabels[selectedArch]}</span>
+                  <svg className={`w-4 h-4 transition-transform ${showArchDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {showArchDropdown && (
+                  <div className="absolute z-10 mt-1 w-full bg-brand-bg-secondary border border-white/[0.12] rounded shadow-lg max-h-60 overflow-y-auto">
+                    {archOptions.map((arch) => (
+                      <button
+                        key={arch}
+                        onClick={() => {
+                          setSelectedArch(arch)
+                          setShowArchDropdown(false)
+                        }}
+                        className={`w-full px-4 py-2 text-left text-sm hover:bg-brand-bg-tertiary ${selectedArch === arch ? 'text-brand-orange' : 'text-brand-text'}`}
+                      >
+                        {archLabels[arch]}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

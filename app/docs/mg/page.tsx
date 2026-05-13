@@ -1,6 +1,12 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'MG渲染器下载 - nxtcorex下载加速',
+  description: 'MG (MobileGlues) 渲染器下载',
+}
 
 export default function MGPage() {
   return (

@@ -1,10 +1,10 @@
 {
-  "name": "anycast-home",
+  "name": "nxtcorex-download-homepage",
   "version": "0.1.0",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/nxtcorex/anycast-homepage.git"
+    "url": "https://github.com/nxtcorex/nxtcorex-download-homepagepage.git"
   },
   "scripts": {
     "dev": "next dev",

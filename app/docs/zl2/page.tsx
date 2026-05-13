@@ -14,21 +14,36 @@ interface Release {
   }[]
 }
 
+const archOptions = [
+  { value: 'universal', label: '通用版' },
+  { value: 'arm64-v8a', label: 'ARM64-V8A' },
+  { value: 'armeabi-v7a', label: 'ARMv7' },
+  { value: 'x86', label: 'X86' },
+  { value: 'x86_64', label: 'X86_64' },
+]
+
 export default function ZL2Page() {
   const [releases, setReleases] = useState<Release[]>([])
-  const [selectedVersion, setSelectedVersion] = useState<string>('latest')
+  const [selectedVersion, setSelectedVersion] = useState<string>('')
+  const [selectedArch, setSelectedArch] = useState<string>('universal')
   const [showVersionDropdown, setShowVersionDropdown] = useState(false)
+  const [showArchDropdown, setShowArchDropdown] = useState(false)
   const [loading, setLoading] = useState(true)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const archDropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchReleases()
+    document.title = 'ZL2启动器下载 - nxtcorex下载加速'
   }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowVersionDropdown(false)
+      }
+      if (archDropdownRef.current && !archDropdownRef.current.contains(event.target as Node)) {
+        setShowArchDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -39,8 +54,9 @@ export default function ZL2Page() {
     try {
       const res = await fetch('https://api.github.com/repos/ZalithLauncher/ZalithLauncher2/releases?per_page=20')
       const data = await res.json()
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
         setReleases(data)
+        setSelectedVersion(data[0].tag_name)
       }
     } catch (error) {
       console.error('Failed to fetch releases:', error)
@@ -49,15 +65,17 @@ export default function ZL2Page() {
     }
   }
 
-  function getDownloadUrl(version: string): string {
-    if (version === 'latest') {
-      return `https://cdn1.download.anycast.ren/dl/zl2/latest/ZalithLauncher.apk`
-    }
-    return `https://cdn1.download.anycast.ren/dl/zl2/${version}/ZalithLauncher-${version}-x86_64.apk`
+  function getDownloadUrl(version: string, arch: string): string {
+    const archSuffix = arch === 'universal' ? '' : `-${arch}`
+    return `https://cdn1.download.anycast.ren/dl/zl2/${version}/ZalithLauncher-${version}${archSuffix}.apk`
+  }
+
+  function getArchDisplayName(arch: string): string {
+    const selected = archOptions.find(opt => opt.value === arch)
+    return selected ? selected.label : '通用版'
   }
 
   function getVersionDisplayName(version: string): string {
-    if (version === 'latest') return '最新版本'
     return version
   }
 
@@ -96,15 +114,6 @@ export default function ZL2Page() {
                 </button>
                 {showVersionDropdown && (
                   <div className="absolute z-10 mt-1 w-full bg-brand-bg-secondary border border-white/[0.12] rounded shadow-lg max-h-60 overflow-y-auto">
-                    <button
-                      onClick={() => {
-                        setSelectedVersion('latest')
-                        setShowVersionDropdown(false)
-                      }}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-brand-bg-tertiary ${selectedVersion === 'latest' ? 'text-brand-orange' : 'text-brand-text'}`}
-                    >
-                      最新版本
-                    </button>
                     {loading ? (
                       <div className="px-4 py-2 text-sm text-brand-text-secondary">加载中...</div>
                     ) : (
@@ -124,10 +133,39 @@ export default function ZL2Page() {
                   </div>
                 )}
               </div>
+
+              <div className="relative" ref={archDropdownRef}>
+                <label className="text-sm text-brand-text-secondary block mb-2">架构</label>
+                <button
+                  onClick={() => setShowArchDropdown(!showArchDropdown)}
+                  className="w-full sm:w-48 bg-brand-bg border border-white/[0.12] rounded px-4 py-2.5 text-sm text-brand-text flex items-center justify-between"
+                >
+                  <span>{getArchDisplayName(selectedArch)}</span>
+                  <svg className={`w-4 h-4 transition-transform ${showArchDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {showArchDropdown && (
+                  <div className="absolute z-10 mt-1 w-full bg-brand-bg-secondary border border-white/[0.12] rounded shadow-lg max-h-60 overflow-y-auto">
+                    {archOptions.map((arch) => (
+                      <button
+                        key={arch.value}
+                        onClick={() => {
+                          setSelectedArch(arch.value)
+                          setShowArchDropdown(false)
+                        }}
+                        className={`w-full px-4 py-2 text-left text-sm hover:bg-brand-bg-tertiary ${selectedArch === arch.value ? 'text-brand-orange' : 'text-brand-text'}`}
+                      >
+                        {arch.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <a
-              href={getDownloadUrl(selectedVersion)}
+              href={getDownloadUrl(selectedVersion, selectedArch)}
               className="btn-primary inline-flex items-center gap-2"
               target="_blank"
               rel="noopener noreferrer"
@@ -135,7 +173,7 @@ export default function ZL2Page() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              下载 {getVersionDisplayName(selectedVersion)}
+              下载 {getVersionDisplayName(selectedVersion)} - {getArchDisplayName(selectedArch)}
             </a>
           </div>
 

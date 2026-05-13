@@ -1,6 +1,12 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '哪吒监控下载 - nxtcorex下载加速',
+  description: '哪吒监控 - 服务器监控与运维管理工具下载',
+}
 
 export default function NezhaPage() {
   return (

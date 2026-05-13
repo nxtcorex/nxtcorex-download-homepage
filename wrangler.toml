@@ -1,4 +1,4 @@
-name = "anycast-home"
+name = "nxtcorex-download-homepage"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2024-05-06"
 pages_build_output_dir = ".vercel/output/static"
