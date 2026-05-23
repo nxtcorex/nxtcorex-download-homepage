@@ -37,9 +37,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center text-base font-mono tracking-wide">
-              <span className="text-brand-text">anycast</span>
-              <span className="text-brand-orange">.</span>
-              <span className="text-brand-text">ren</span>
+              <span className="text-brand-text">nxtcorex</span>
+              <span className="text-brand-orange">下载加速</span>
             </Link>
           </div>
 

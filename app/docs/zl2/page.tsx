@@ -65,9 +65,36 @@ export default function ZL2Page() {
     }
   }
 
+  function normalizeVersionForFilename(version: string): string {
+    if (version.includes('.') || !/^\d+$/.test(version)) {
+      return version
+    }
+
+    return version.split('').join('.')
+  }
+
   function getDownloadUrl(version: string, arch: string): string {
+    const release = releases.find(item => item.tag_name === version)
+
+    if (release) {
+      const asset = release.assets.find(item => {
+        const isApk = item.name.endsWith('.apk')
+        const matchesArch = arch === 'universal'
+          ? /^ZalithLauncher-[^-]+\.apk$/.test(item.name)
+          : item.name.includes(`-${arch}.apk`)
+
+        return isApk && matchesArch
+      })
+
+      if (asset) {
+        return asset.browser_download_url
+          .replace('https://github.com/ZalithLauncher/ZalithLauncher2/releases/download/', 'https://cdn1.download.anycast.ren/dl/zl2/')
+      }
+    }
+
     const archSuffix = arch === 'universal' ? '' : `-${arch}`
-    return `https://cdn1.download.anycast.ren/dl/zl2/${version}/ZalithLauncher-${version}${archSuffix}.apk`
+    const normalizedVersion = normalizeVersionForFilename(version)
+    return `https://cdn1.download.anycast.ren/dl/zl2/${version}/ZalithLauncher-${normalizedVersion}${archSuffix}.apk`
   }
 
   function getArchDisplayName(arch: string): string {

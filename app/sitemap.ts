@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.anycast.ren'
+  const baseUrl = 'https://download.nxtcorex.top'
   const currentDate = new Date()
 
   // 定义所有路由
