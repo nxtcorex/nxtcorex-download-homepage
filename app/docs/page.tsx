@@ -10,6 +10,12 @@ const cdnRows = [
     region: 'Global',
     status: 'Active',
   },
+  {
+    domain: 'cdn2.download.nxtcorex.top',
+    provider: 'Cloudflare CDN',
+    region: 'Global',
+    status: 'Active',
+  },
 ]
 
 export default function DocsPage() {
