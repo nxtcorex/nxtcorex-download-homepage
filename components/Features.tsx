@@ -1,9 +1,11 @@
 'use client'
 
+import { Card, CardContent } from '@/components/ui/card'
+
 const features = [
   {
     icon: (
-      <svg viewBox="0 0 40 40" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 40 40" className="h-10 w-10" fill="none">
         <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="1.2" opacity="0.3" />
         <path d="M20 6 L20 34 M6 20 L34 20" stroke="currentColor" strokeWidth="1" opacity="0.2" />
         <circle cx="20" cy="20" r="3" fill="currentColor" />
@@ -18,7 +20,7 @@ const features = [
   },
   {
     icon: (
-      <svg viewBox="0 0 40 40" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 40 40" className="h-10 w-10" fill="none">
         <path d="M8 32 L8 16 Q8 8 16 8 L24 8 Q32 8 32 16 L32 32" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
         <line x1="4" y1="32" x2="36" y2="32" stroke="currentColor" strokeWidth="1.2" />
         <path d="M20 24 L20 16 M17 19 L20 16 L23 19" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -29,7 +31,7 @@ const features = [
   },
   {
     icon: (
-      <svg viewBox="0 0 40 40" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 40 40" className="h-10 w-10" fill="none">
         <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="1.2" opacity="0.3" />
         <circle cx="20" cy="20" r="10" stroke="currentColor" strokeWidth="1" opacity="0.5" />
         <circle cx="20" cy="20" r="4" stroke="currentColor" strokeWidth="1.2" />
@@ -46,35 +48,27 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="bg-brand-bg-secondary py-20 md:py-32 px-5 lg:px-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-5 justify-center lg:justify-start">
-          <span className="text-[11px] text-brand-orange font-mono tracking-[0.12em] uppercase">核心能力</span>
-          <span className="flex-1 h-px max-w-10 bg-brand-orange/40"></span>
+    <section id="features" className="border-y bg-muted/20 py-16 md:py-24">
+      <div className="section-shell">
+        <div className="mb-12 text-center lg:text-left">
+          <div className="eyebrow mb-5 justify-center lg:justify-start">核心能力</div>
+          <h2 className="text-3xl font-semibold leading-tight tracking-normal sm:text-4xl lg:text-5xl">
+            为大文件传输<br />专门设计
+          </h2>
         </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal leading-tight mb-5 text-center lg:text-left">
-          为大文件传输<br />专门设计
-        </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07]">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-brand-bg-secondary p-10 card-hover"
-            >
-              <div className="w-10 h-10 mb-6 text-brand-orange">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-medium text-brand-text mb-3 leading-snug">
-                {feature.title}
-              </h3>
-              <p className="text-sm font-light text-brand-text-secondary leading-[1.7]">
-                {feature.description}
-              </p>
-              <div className="mt-5 text-[11px] font-mono text-brand-orange tracking-[0.08em]">
-                {feature.metric}
-              </div>
-            </div>
+            <Card key={index} className="group min-h-[300px] border bg-card/80 transition-colors hover:bg-accent/60">
+              <CardContent className="flex h-full flex-col p-8 sm:p-10">
+                <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-md border bg-muted text-muted-foreground transition-colors group-hover:text-foreground">
+                  {feature.icon}
+                </div>
+                <h3 className="mb-3 text-lg font-medium leading-snug text-foreground">{feature.title}</h3>
+                <p className="text-sm leading-7 text-muted-foreground">{feature.description}</p>
+                <div className="mt-auto pt-7 font-mono text-[11px] tracking-normal text-muted-foreground">{feature.metric}</div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

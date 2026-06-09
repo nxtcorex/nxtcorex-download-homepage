@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { DM_Sans, DM_Mono, Playfair_Display } from 'next/font/google'
+import { DM_Mono, DM_Sans, Playfair_Display } from 'next/font/google'
+import PageTransition from '@/components/PageTransition'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={`${dmSans.variable} ${dmMono.variable} ${playfair.variable}`}>
       <body className="bg-brand-bg text-brand-text font-sans antialiased">
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   )

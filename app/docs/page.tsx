@@ -1,71 +1,59 @@
-import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-const docsItems = [
+const cdnRows = [
   {
-    title: 'PCLCE',
-    description: 'PCL2启动器社区版。',
-    href: '/docs/pclce',
-  },
-  {
-    title: '哪吒监控',
-    description: '服务器监控与运维管理工具，提供 Linux 安装脚本加速下载。',
-    href: '/docs/nezha',
-  },
-  {
-    title: 'FCL (Fold Craft Launcher)',
-    description: 'Android Minecraft 启动器，支持通用架构、ARM64、ARMv7、x86、x86_64 多种架构。',
-    href: '/docs/fcl',
-  },
-  {
-    title: 'ZL (Zalith Launcher)',
-    description: 'Android Minecraft 启动器。',
-    href: '/docs/zl',
-  },
-  {
-    title: 'ZL2 (Zalith Launcher 2)',
-    description: 'Zalith Launcher 第二代，全新架构设计。',
-    href: '/docs/zl2',
-  },
-  {
-    title: 'MG (MobileGlues)',
-    description: 'MG渲染器。',
-    href: '/docs/mg',
+    domain: 'cdn1.download.nxtcorex.top',
+    provider: 'Alibaba Cloud ESA',
+    region: 'Global',
+    status: 'Active',
   },
 ]
 
 export default function DocsPage() {
   return (
-    <main className="min-h-screen bg-brand-bg flex flex-col">
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
-      
-      <div className="flex-grow pt-24 pb-16 px-5 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="text-[11px] text-brand-orange font-mono tracking-[0.12em] uppercase">下载文档</span>
-            <span className="flex-1 h-px max-w-10 bg-brand-orange/40"></span>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-serif font-normal leading-tight mb-5">
-            选择项目<br />查看下载链接
-          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.12] border border-white/[0.12]">
-            {docsItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                className="bg-brand-bg-secondary p-10 card-hover"
-              >
-                <h3 className="text-lg font-medium text-brand-text mb-3 leading-snug">
-                  {item.title}
-                </h3>
-                <p className="text-sm font-light text-brand-text-secondary leading-[1.7]">
-                  {item.description}
-                </p>
-              </Link>
-            ))}
+      <div className="relative flex-grow overflow-hidden border-b pt-16">
+        <div className="absolute inset-0 panel-grid opacity-[0.12]" />
+        <div className="section-shell relative py-12 sm:py-16 lg:py-20">
+          <div className="mb-10 max-w-3xl">
+            <Badge variant="secondary" className="mb-5 rounded-md px-2.5 py-1 font-mono text-[11px] uppercase tracking-normal text-muted-foreground">
+              CDN 服务对照表
+            </Badge>
+            <h1 className="text-4xl font-semibold leading-tight tracking-normal text-foreground lg:text-5xl">
+              CDN 服务对照表
+            </h1>
           </div>
+
+          <Card className="overflow-hidden border bg-card/80">
+            <CardHeader className="border-b">
+              <CardTitle className="text-lg font-medium">服务域名</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="hidden grid-cols-[1.5fr_1fr_0.7fr_0.6fr] border-b bg-muted/30 px-4 py-3 font-mono text-[11px] uppercase tracking-normal text-muted-foreground md:grid">
+                <div>Domain</div>
+                <div>Provider</div>
+                <div>Region</div>
+                <div>Status</div>
+              </div>
+              {cdnRows.map((row) => (
+                <div key={row.domain} className="grid grid-cols-1 gap-3 border-b px-4 py-4 last:border-b-0 md:grid-cols-[1.5fr_1fr_0.7fr_0.6fr] md:items-center">
+                  <div className="font-mono text-sm text-foreground">{row.domain}</div>
+                  <div className="text-sm text-muted-foreground">{row.provider}</div>
+                  <div className="text-sm text-muted-foreground">{row.region}</div>
+                  <div>
+                    <Badge variant="outline" className="font-mono text-[11px] text-muted-foreground">
+                      {row.status}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
       </div>
 

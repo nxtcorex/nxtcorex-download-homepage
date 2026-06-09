@@ -1,32 +1,29 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-bg-secondary border-t border-white/[0.07] py-16 px-5 lg:px-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 pb-12 border-b border-white/[0.07] mb-8 text-center lg:text-left">
+    <footer className="border-t bg-muted/20 py-14">
+      <div className="section-shell">
+        <div className="grid grid-cols-1 gap-12 border-b pb-12 text-center lg:grid-cols-[280px_1fr] lg:gap-20 lg:text-left">
           <div className="flex flex-col items-center lg:items-start">
-            <span className="text-base font-mono text-brand-text mb-4 block">
-              nxtcorex<span className="text-brand-orange">下载加速</span>
+            <span className="mb-4 block text-base text-foreground">
+              nxtcorex<span className="text-muted-foreground">下载加速</span>
             </span>
-            <p className="text-[13px] font-light text-brand-text-secondary leading-[1.7] max-w-[220px]">
+            <p className="max-w-[220px] text-[13px] font-light leading-[1.7] text-muted-foreground">
               基于 Cloudflare 全球骨干网络构建的专业文件加速下载服务。
             </p>
           </div>
 
           <div className="flex items-center justify-center lg:justify-end">
             <div>
-              <h4 className="text-[11px] font-mono text-brand-text-secondary tracking-[0.1em] uppercase mb-5">
+              <h4 className="mb-5 text-[11px] uppercase tracking-normal text-muted-foreground">
                 文档
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link
-                    href="/docs"
-                    className="text-[13px] font-light text-brand-text-secondary/60 hover:text-brand-text transition-colors duration-200"
-                  >
+                  <Link href="/download" className="text-[13px] font-light text-muted-foreground hover:text-foreground">
                     快速开始
                   </Link>
                 </li>
@@ -35,16 +32,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 text-[11px] font-mono text-brand-text-secondary/35 text-center lg:text-left">
+        <div className="flex flex-col items-center justify-center gap-4 pt-8 text-center text-[11px] text-muted-foreground/55 lg:flex-row lg:justify-between lg:text-left">
           <p>
             © 2026 nxtcorex. Infrastructure by{' '}
-            <a href="https://cloudflare.com" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
+            <a href="https://cloudflare.com" target="_blank" className="text-foreground/70 hover:text-foreground">
               Cloudflare
             </a>.
           </p>
           <p>
             此网页开源于{' '}
-            <a href="https://github.com/nxtcorex/nxtcorex-download-homepage" target="_blank" className="text-brand-orange/60 hover:text-brand-orange">
+            <a href="https://github.com/nxtcorex/nxtcorex-download-homepage" target="_blank" className="text-foreground/70 hover:text-foreground">
               GitHub
             </a>.
           </p>

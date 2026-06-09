@@ -1,5 +1,7 @@
 'use client'
 
+import { Card } from '@/components/ui/card'
+
 const stats = [
   {
     value: '310',
@@ -20,24 +22,21 @@ const stats = [
 
 export default function Stats() {
   return (
-    <div className="bg-brand-bg-secondary border-t border-b border-white/[0.07]">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-3">
+    <section className="border-b bg-muted/20 py-6">
+      <div className="mx-auto max-w-6xl px-5">
+        <Card className="grid grid-cols-1 overflow-hidden border bg-card/80 sm:grid-cols-3">
           {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="py-8 px-12 border-r border-white/[0.07] last:border-r-0 sm:border-r border-b sm:border-b-0 last:border-b-0 text-center"
-            >
-              <div className="text-4xl font-mono font-light text-brand-text tracking-tight leading-none mb-1.5">
-                {stat.value}<span className="text-brand-orange">{stat.suffix}</span>
+            <div key={index} className="border-b p-7 text-center last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+              <div className="mb-2 font-mono text-4xl font-medium leading-none tracking-normal text-foreground">
+                {stat.value}<span className="text-muted-foreground">{stat.suffix}</span>
               </div>
-              <div className="text-xs text-brand-text-secondary tracking-[0.05em] uppercase">
+              <div className="text-xs uppercase tracking-normal text-muted-foreground">
                 {stat.label}
               </div>
             </div>
           ))}
-        </div>
+        </Card>
       </div>
-    </div>
+    </section>
   )
 }

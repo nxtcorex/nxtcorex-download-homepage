@@ -1,13 +1,16 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { Menu, X } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const menuItems = [
   { label: '原理', href: '#how-it-works' },
   { label: '功能', href: '#features' },
-  { label: '网络', href: '#network' },
   { label: '文档', href: '/docs' },
 ]
 
@@ -19,7 +22,7 @@ export default function Navbar() {
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     const anchor = href.replace('#', '')
-    
+
     if (pathname !== '/') {
       router.push('/' + href)
     } else {
@@ -32,108 +35,68 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-bg/85 backdrop-blur-lg border-b border-white/[0.07]">
-      <div className="max-w-7xl mx-auto px-12">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center text-base font-mono tracking-wide">
-              <span className="text-brand-text">nxtcorex</span>
-              <span className="text-brand-orange">下载加速</span>
-            </Link>
-          </div>
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <Link href="/" className="flex items-baseline text-sm font-medium tracking-normal">
+            <span className="text-foreground">nxtcorex</span>
+            <span className="ml-2 text-muted-foreground">下载加速</span>
+          </Link>
 
-          <div className="hidden md:flex items-center gap-9">
-            {menuItems.map((item) => (
+          <div className="hidden items-center gap-2 md:flex">
+            {menuItems.map((item) =>
               item.href.startsWith('#') ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => handleAnchorClick(e, item.href)}
-                  className="text-[13px] text-brand-text-secondary hover:text-brand-text transition-colors duration-200 tracking-wide"
-                >
-                  {item.label}
-                </a>
+                <Button key={item.label} asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  <a href={item.href} onClick={(e) => handleAnchorClick(e, item.href)}>
+                    {item.label}
+                  </a>
+                </Button>
               ) : (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="text-[13px] text-brand-text-secondary hover:text-brand-text transition-colors duration-200 tracking-wide"
-                >
-                  {item.label}
-                </Link>
+                <Button key={item.label} asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  <Link href={item.href}>{item.label}</Link>
+                </Button>
               )
-            ))}
-            <Link
-              href="/docs"
-              className="border border-brand-orange/40 text-brand-orange px-5 py-2 text-xs font-mono tracking-wider transition-all duration-200 hover:bg-brand-orange hover:text-brand-bg"
-            >
-              开始使用
-            </Link>
+            )}
+            <Button asChild size="sm" className="ml-3 tracking-normal">
+              <Link href="/download">开始使用</Link>
+            </Button>
+            <ThemeToggle />
           </div>
 
-          <div className="md:hidden">
-            <button
+          <div className="flex items-center gap-1 md:hidden">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-brand-text-secondary hover:text-brand-text p-2"
               aria-label="Toggle menu"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-white/[0.07]">
-            <div className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
+          <div className="border-t py-4 md:hidden">
+            <div className="flex flex-col gap-2">
+              {menuItems.map((item) =>
                 item.href.startsWith('#') ? (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="text-sm text-brand-text-secondary hover:text-brand-text transition-colors duration-200"
-                    onClick={(e) => handleAnchorClick(e, item.href)}
-                  >
-                    {item.label}
-                  </a>
+                  <Button key={item.label} asChild variant="ghost" className="justify-start text-muted-foreground">
+                    <a href={item.href} onClick={(e) => handleAnchorClick(e, item.href)}>
+                      {item.label}
+                    </a>
+                  </Button>
                 ) : (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="text-sm text-brand-text-secondary hover:text-brand-text transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
+                  <Button key={item.label} asChild variant="ghost" className="justify-start text-muted-foreground">
+                    <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
+                      {item.label}
+                    </Link>
+                  </Button>
                 )
-              ))}
-              <Link
-                href="/docs"
-                className="border border-brand-orange/40 text-brand-orange px-5 py-2 text-xs font-mono tracking-wider text-center transition-all duration-200 hover:bg-brand-orange hover:text-brand-bg"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                开始使用
-              </Link>
+              )}
+              <Button asChild className="mt-2 tracking-normal" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/download">开始使用</Link>
+              </Button>
             </div>
           </div>
         )}

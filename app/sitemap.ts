@@ -4,7 +4,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://download.nxtcorex.top'
   const currentDate = new Date()
 
-  // 定义所有路由
   const routes = [
     {
       url: baseUrl,
@@ -13,47 +12,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/docs`,
+      url: `${baseUrl}/download`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/docs/pclce`,
+      url: `${baseUrl}/docs`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    ...['pclce', 'mg', 'zl', 'zl2', 'fcl', 'nezha'].map((slug) => ({
+      url: `${baseUrl}/download/${slug}`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/docs/mg`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/docs/zl`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/docs/zl2`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/docs/fcl`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/docs/nezha`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
+    })),
   ]
 
   return routes
