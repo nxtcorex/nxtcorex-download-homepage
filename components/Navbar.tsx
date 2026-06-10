@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle'
 
 const menuItems = [
-  { label: '原理', href: '#how-it-works' },
   { label: '功能', href: '#features' },
   { label: '文档', href: '/docs' },
 ]

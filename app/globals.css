@@ -4,54 +4,54 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --background: 220 11% 16%;
+    --foreground: 210 17% 92%;
+    --card: 220 10% 20%;
+    --card-foreground: 210 17% 92%;
+    --popover: 220 10% 20%;
+    --popover-foreground: 210 17% 92%;
+    --primary: 210 17% 92%;
+    --primary-foreground: 220 11% 16%;
+    --secondary: 220 9% 26%;
+    --secondary-foreground: 210 17% 92%;
+    --muted: 220 9% 26%;
+    --muted-foreground: 216 10% 68%;
+    --accent: 220 8% 31%;
+    --accent-foreground: 210 17% 92%;
+    --destructive: 0 64% 38%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --shadow-panel: 0 1px 0 hsl(var(--border)), 0 24px 80px rgba(0, 0, 0, 0.32);
+    --border: 220 8% 32%;
+    --input: 220 8% 32%;
+    --ring: 210 17% 82%;
+    --shadow-panel: 0 1px 0 hsl(var(--border)), 0 24px 72px rgba(0, 0, 0, 0.26);
     --shadow-provider-hover: var(--shadow-panel);
-    --globe-filter: drop-shadow(0 24px 80px rgba(0, 0, 0, 0.35));
+    --globe-filter: drop-shadow(0 26px 78px rgba(0, 0, 0, 0.28));
     --radius: 0.5rem;
   }
 
   .light {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
+    --background: 220 14% 93%;
+    --foreground: 224 26% 13%;
+    --card: 0 0% 98%;
+    --card-foreground: 224 26% 13%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 224 26% 13%;
+    --primary: 224 26% 13%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 220 11% 88%;
+    --secondary-foreground: 224 26% 13%;
+    --muted: 220 13% 88%;
+    --muted-foreground: 224 9% 39%;
+    --accent: 210 16% 85%;
+    --accent-foreground: 224 26% 13%;
+    --destructive: 0 72% 46%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --shadow-panel: 0 1px 0 hsl(var(--border));
-    --shadow-provider-hover: none;
-    --globe-filter: none;
+    --border: 220 11% 78%;
+    --input: 220 11% 78%;
+    --ring: 224 26% 13%;
+    --shadow-panel: 0 1px 0 hsl(var(--border)), 0 18px 60px rgba(70, 80, 95, 0.14);
+    --shadow-provider-hover: 0 1px 0 hsl(var(--border)), 0 16px 44px rgba(70, 80, 95, 0.12);
+    --globe-filter: drop-shadow(0 28px 80px rgba(70, 80, 95, 0.18));
   }
 
   * {

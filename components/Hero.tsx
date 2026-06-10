@@ -1,7 +1,6 @@
 ﻿'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -31,12 +30,6 @@ export default function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
             <Button asChild size="lg" className="font-medium">
               <Link href="/download">立即体验</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="group bg-background/70 text-muted-foreground hover:text-foreground">
-              <Link href="/download">
-                了解工作原理
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
             </Button>
           </div>
         </div>
