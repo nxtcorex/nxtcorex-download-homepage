@@ -1,26 +1,15 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
+import dict, { type Locale } from '@/lib/i18n'
 
-const stats = [
-  {
-    value: '310',
-    suffix: '+',
-    label: '全球边缘节点',
-  },
-  {
-    value: '8',
-    suffix: 'ms',
-    label: '平均首字节延迟',
-  },
-  {
-    value: '∞',
-    suffix: '',
-    label: '带宽上限无限制',
-  },
-]
+interface StatsProps {
+  locale?: Locale
+}
 
-export default function Stats() {
+export default function Stats({ locale = 'zh' }: StatsProps) {
+  const stats = dict[locale].stats
+
   return (
     <section className="border-b bg-muted/20 py-6">
       <div className="mx-auto max-w-6xl px-5">

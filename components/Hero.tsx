@@ -6,8 +6,15 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Globe from './Globe'
+import dict, { type Locale, localizedHref } from '@/lib/i18n'
 
-export default function Hero() {
+interface HeroProps {
+  locale?: Locale
+}
+
+export default function Hero({ locale = 'zh' }: HeroProps) {
+  const t = dict[locale].hero
+
   return (
     <section className="relative min-h-screen overflow-hidden border-b pt-16">
       <div className="absolute inset-0 panel-grid opacity-[0.18]" />
@@ -15,21 +22,21 @@ export default function Hero() {
       <div className="section-shell relative grid min-h-[calc(100vh-4rem)] grid-cols-1 items-center gap-8 py-14 lg:grid-cols-[0.86fr_1.14fr] lg:py-20">
         <div className="relative z-10 text-center lg:text-left">
           <Badge variant="secondary" className="mb-6 rounded-md px-2.5 py-1 font-mono text-[11px] uppercase tracking-normal text-muted-foreground">
-            Powered by Cloudflare Network
+            {t.badge}
           </Badge>
 
           <h1 className="mx-auto mb-5 max-w-[720px] text-4xl font-semibold leading-[1.05] tracking-normal text-foreground sm:text-6xl lg:mx-0 lg:text-[72px]">
-            每一字节<br />
-            <em className="not-italic text-muted-foreground">极速</em>抵达
+            {t.headline1}<br />
+            <em className="not-italic text-muted-foreground">{t.headline2}</em>{t.headline3}
           </h1>
 
           <p className="mx-auto mb-8 max-w-[470px] text-sm leading-7 text-muted-foreground sm:text-base lg:mx-0">
-            依托 Cloudflare 全球 Anycast 骨干网络，文件下载请求在毫秒内路由至最近节点，带宽不再是瓶颈。
+            {t.description}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
             <Button asChild size="lg" className="font-medium">
-              <Link href="/download">立即体验</Link>
+              <Link href={localizedHref('/download', locale)}>{t.cta}</Link>
             </Button>
           </div>
         </div>

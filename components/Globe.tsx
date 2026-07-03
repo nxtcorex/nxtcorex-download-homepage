@@ -1,9 +1,10 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 const CENTER = 280
 const RADIUS = 250
 const MERIDIANS = 32
-const FRAMES = 48
 const PATH_POINTS = 24
 const ROTATION_SECONDS = 18
 
@@ -18,39 +19,67 @@ function meridianPath(degrees: number) {
     const latitude = Math.PI / 2 - (Math.PI * index) / PATH_POINTS
     const x = CENTER + xRadius * Math.cos(latitude)
     const y = CENTER - RADIUS * Math.sin(latitude)
-
     return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`
   })
-
   return points.join(' ')
 }
 
 function meridianOpacity(degrees: number) {
   const angle = (normalizeDegrees(degrees) * Math.PI) / 180
   const depth = Math.cos(angle)
-
-  if (depth <= 0) return '0'
-
-  return (0.035 + 0.105 * depth).toFixed(3)
+  if (depth <= 0) return 0
+  return 0.035 + 0.105 * depth
 }
 
-function meridianFrames(baseDegrees: number) {
-  return Array.from({ length: FRAMES + 1 }, (_, frame) => normalizeDegrees(baseDegrees + (360 * frame) / FRAMES))
-}
-
-function joinedFrameValues(baseDegrees: number, mapper: (degrees: number) => string) {
-  return meridianFrames(baseDegrees)
-    .map(mapper)
-    .join(';')
-}
+// Pre-compute all meridian base degrees
+const meridianBases = Array.from({ length: MERIDIANS }, (_, i) => (360 * i) / MERIDIANS)
 
 export default function Globe() {
+  const pathsRef = useRef<(SVGPathElement | null)[]>([])
+  const rafRef = useRef<number>(0)
+  const startTimeRef = useRef<number>(0)
+
+  useEffect(() => {
+    startTimeRef.current = performance.now()
+
+    function animate(now: number) {
+      const elapsed = (now - startTimeRef.current) / 1000 // seconds
+      const rotationDeg = (elapsed / ROTATION_SECONDS) * 360
+
+      meridianBases.forEach((baseDegrees, i) => {
+        const el = pathsRef.current[i]
+        if (!el) return
+        const currentDeg = normalizeDegrees(baseDegrees + rotationDeg)
+        el.setAttribute('d', meridianPath(currentDeg))
+        el.setAttribute('opacity', meridianOpacity(currentDeg).toFixed(3))
+      })
+
+      rafRef.current = requestAnimationFrame(animate)
+    }
+
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
+
   return (
-    <div className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] lg:w-[560px] lg:h-[560px] lg:translate-x-20 lg:translate-y-5" style={{ perspective: '1000px' }}>
-      <div className="absolute w-[320px] h-[320px] border border-border/60 animate-[pulse-expand_4s_ease-out_infinite]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
-      <div className="absolute w-[320px] h-[320px] border border-border/45 animate-[pulse-expand_4s_ease-out_infinite_1.3s]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
-      <div className="absolute w-[320px] h-[320px] border border-border/30 animate-[pulse-expand_4s_ease-out_infinite_2.6s]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
-      
+    <div
+      className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] lg:w-[560px] lg:h-[560px] lg:translate-x-20 lg:translate-y-5"
+      style={{ perspective: '1000px' }}
+    >
+      {/* Pulse rings — pointer-events:none so they never block clicks */}
+      <div
+        className="absolute w-[320px] h-[320px] border border-border/60 animate-[pulse-expand_4s_ease-out_infinite]"
+        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
+      />
+      <div
+        className="absolute w-[320px] h-[320px] border border-border/45 animate-[pulse-expand_4s_ease-out_infinite_1.3s]"
+        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
+      />
+      <div
+        className="absolute w-[320px] h-[320px] border border-border/30 animate-[pulse-expand_4s_ease-out_infinite_2.6s]"
+        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
+      />
+
       <svg
         viewBox="0 0 560 560"
         className="w-full h-full"
@@ -74,19 +103,17 @@ export default function Globe() {
         <circle cx="280" cy="280" r="250" fill="url(#rimGrad)" opacity="0.7" />
 
         <g clipPath="url(#globeClip)">
-          {Array.from({ length: MERIDIANS }, (_, index) => (360 * index) / MERIDIANS).map((baseDegrees) => (
+          {meridianBases.map((baseDegrees, i) => (
             <path
               key={baseDegrees}
+              ref={(el) => { pathsRef.current[i] = el }}
               d={meridianPath(baseDegrees)}
               fill="none"
-              opacity={meridianOpacity(baseDegrees)}
+              opacity={meridianOpacity(baseDegrees).toFixed(3)}
               stroke="hsl(var(--foreground))"
               strokeLinecap="round"
               strokeWidth="0.75"
-            >
-              <animate attributeName="d" values={joinedFrameValues(baseDegrees, meridianPath)} dur={`${ROTATION_SECONDS}s`} repeatCount="indefinite" />
-              <animate attributeName="opacity" values={joinedFrameValues(baseDegrees, meridianOpacity)} dur={`${ROTATION_SECONDS}s`} repeatCount="indefinite" />
-            </path>
+            />
           ))}
         </g>
 

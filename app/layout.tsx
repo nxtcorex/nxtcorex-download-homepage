@@ -24,6 +24,12 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'nxtcorex下载加速 - 每一字节 极速抵达',
   description: 'nxtcorex 下载加速服务，基于全球网络的专业文件加速',
+  alternates: {
+    languages: {
+      'zh-CN': '/',
+      'en': '/en',
+    },
+  },
 }
 
 export default function RootLayout({

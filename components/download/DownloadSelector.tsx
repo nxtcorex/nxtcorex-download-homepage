@@ -6,6 +6,26 @@ import { Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { type Locale } from '@/lib/i18n'
+
+const uiText = {
+  zh: {
+    version: '版本',
+    arch: '架构',
+    loading: '加载中...',
+    selectVersion: '选择版本',
+    latestVersion: '最新版本',
+    download: '下载',
+  },
+  en: {
+    version: 'Version',
+    arch: 'Architecture',
+    loading: 'Loading...',
+    selectVersion: 'Select version',
+    latestVersion: 'Latest',
+    download: 'Download',
+  },
+}
 
 export interface Release {
   tag_name: string
@@ -28,19 +48,14 @@ interface DownloadSelectorProps {
   initialArch: string
   archOptions: ArchOption[]
   filterBeta?: boolean
+  locale?: Locale
 }
 
 function normalizeVersionForFilename(version: string) {
   if (version.includes('.') || !/^\d+$/.test(version)) {
     return version
   }
-
   return version.split('').join('.')
-}
-
-function getVersionDisplayName(version: string) {
-  if (version === 'latest') return '最新版本'
-  return version
 }
 
 function getDownloadUrl(product: DownloadSelectorProps['product'], version: string, arch: string, releases: Release[]) {
@@ -94,11 +109,13 @@ export default function DownloadSelector({
   initialArch,
   archOptions,
   filterBeta,
+  locale = 'zh',
 }: DownloadSelectorProps) {
   const [releases, setReleases] = useState<Release[]>([])
   const [selectedVersion, setSelectedVersion] = useState(initialVersion)
   const [selectedArch, setSelectedArch] = useState(initialArch)
   const [loading, setLoading] = useState(true)
+  const t = uiText[locale]
 
   useEffect(() => {
     async function fetchReleases() {
@@ -128,24 +145,25 @@ export default function DownloadSelector({
 
   const selectedArchLabel = archOptions.find((arch) => arch.value === selectedArch)?.label ?? selectedArch
   const downloadUrl = getDownloadUrl(product, selectedVersion, selectedArch, releases)
+  const versionDisplay = selectedVersion === 'latest' ? t.latestVersion : selectedVersion
 
   return (
     <Card className="mb-8 border bg-card/80">
       <CardContent className="p-6">
         <div className="mb-6 grid gap-4 sm:grid-cols-[minmax(0,220px)_minmax(0,200px)]">
           <div className="space-y-2">
-            <label className="text-sm text-muted-foreground">版本</label>
+            <label className="text-sm text-muted-foreground">{t.version}</label>
             <Select value={selectedVersion} onValueChange={setSelectedVersion} disabled={loading && !selectedVersion}>
               <SelectTrigger className="h-11 bg-background">
-                <SelectValue placeholder={loading ? '加载中...' : '选择版本'} />
+                <SelectValue placeholder={loading ? t.loading : t.selectVersion} />
               </SelectTrigger>
               <SelectContent>
                 {initialVersion === 'latest' && (
-                  <SelectItem value="latest">最新版本</SelectItem>
+                  <SelectItem value="latest">{t.latestVersion}</SelectItem>
                 )}
                 {releases.map((release) => (
                   <SelectItem key={release.tag_name} value={release.tag_name}>
-                    {getVersionDisplayName(release.tag_name)}
+                    {release.tag_name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -153,7 +171,7 @@ export default function DownloadSelector({
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm text-muted-foreground">架构</label>
+            <label className="text-sm text-muted-foreground">{t.arch}</label>
             <Select value={selectedArch} onValueChange={setSelectedArch}>
               <SelectTrigger className="h-11 bg-background">
                 <SelectValue />
@@ -172,7 +190,7 @@ export default function DownloadSelector({
         <Button asChild size="lg" className="w-full justify-center sm:w-auto">
           <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4" />
-            下载 {getVersionDisplayName(selectedVersion)} - {selectedArchLabel}
+            {t.download} {versionDisplay} - {selectedArchLabel}
           </a>
         </Button>
       </CardContent>
