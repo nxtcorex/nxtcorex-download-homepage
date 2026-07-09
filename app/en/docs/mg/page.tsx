@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
+import ClientRedirect from '@/components/ClientRedirect'
 
 export default function Page() {
-  redirect('/en/download/mg')
+  return <ClientRedirect to="/en/download/mg" />
 }
