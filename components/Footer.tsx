@@ -44,9 +44,9 @@ export default function Footer({ locale = 'zh' }: FooterProps) {
         <div className="flex flex-col items-center justify-center gap-4 pt-8 text-center text-[11px] text-muted-foreground/55 lg:flex-row lg:justify-between lg:text-left">
           <p>
             {t.copyright}{' '}
-            <a href="https://cloudflare.com" target="_blank" className="text-foreground/70 hover:text-foreground">
-              Cloudflare
-            </a>.
+            <a href="https://beian.miit.gov.cn" target="_blank" className="text-foreground/70 hover:text-foreground">
+              京ICP备2025138063号-2
+            </a>
           </p>
           <p>
             {t.openSource}{' '}

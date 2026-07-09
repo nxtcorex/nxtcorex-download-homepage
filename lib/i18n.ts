@@ -77,10 +77,10 @@ const dict = {
       ],
     },
     footer: {
-      description: '基于 Cloudflare 全球骨干网络构建的专业文件加速下载服务。',
+      description: '基于全球骨干网络构建的专业文件加速下载服务。',
       docsColumn: '文档',
       quickStart: '快速开始',
-      copyright: '© 2026 nxtcorex. Infrastructure by',
+      copyright: '© 2026 nxtcorex',
       openSource: '此网页开源于',
     },
     meta: {
@@ -131,10 +131,10 @@ const dict = {
       ],
     },
     footer: {
-      description: 'Professional file download acceleration built on the Cloudflare global backbone.',
+      description: 'Professional file download acceleration built on a global backbone.',
       docsColumn: 'Docs',
       quickStart: 'Quick Start',
-      copyright: '© 2026 nxtcorex. Infrastructure by',
+      copyright: '© 2026 nxtcorex',
       openSource: 'This site is open source on',
     },
     meta: {
