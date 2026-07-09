@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Nezha Monitor — server monitoring tool, accelerated Linux install script',
 }
 
-const downloadUrl = 'https://cdn1.download.nxtcorex.top/dl/nezhamonitoring/liunx/install.sh'
+const downloadUrl = 'https://cdn.download.nxtcorex.cn/dl/nezhamonitoring/liunx/install.sh'
 
 export default function NezhaPageEn() {
   return (

@@ -53,8 +53,8 @@ export default function ZL2Page() {
                 </div>
                 <div>
                   <span className="mb-1 block text-xs text-foreground">加速地址:</span>
-                  <a href="https://cdn1.download.nxtcorex.top/dl/zl2/2.0.0_beta-20250920a/ZalithLauncher-2.0.0_beta-20250920a-x86_64.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
-                    https://cdn1.download.nxtcorex.top/dl/zl2/2.0.0_beta-20250920a/ZalithLauncher-2.0.0_beta-20250920a-x86_64.apk
+                  <a href="https://cdn.download.nxtcorex.cn/dl/zl2/2.0.0_beta-20250920a/ZalithLauncher-2.0.0_beta-20250920a-x86_64.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
+                    https://cdn.download.nxtcorex.cn/dl/zl2/2.0.0_beta-20250920a/ZalithLauncher-2.0.0_beta-20250920a-x86_64.apk
                   </a>
                 </div>
               </div>

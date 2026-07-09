@@ -11,14 +11,8 @@ export const metadata: Metadata = {
 
 const cdnRows = [
   {
-    domain: 'cdn1.download.nxtcorex.top',
-    provider: 'Alibaba Cloud ESA',
-    region: 'Global',
-    status: 'Active',
-  },
-  {
-    domain: 'cdn2.download.nxtcorex.top',
-    provider: 'Cloudflare CDN',
+    domain: 'cdn.download.nxtcorex.cn',
+    provider: 'Cloudflare / Alibaba Cloud ESA',
     region: 'Global',
     status: 'Active',
   },

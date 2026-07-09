@@ -61,18 +61,18 @@ function normalizeVersionForFilename(version: string) {
 function getDownloadUrl(product: DownloadSelectorProps['product'], version: string, arch: string, releases: Release[]) {
   if (product === 'pclce') {
     if (version === 'latest') {
-      return `https://cdn1.download.nxtcorex.top/dl/pclce/pcl2ce/PCL2_CE_Release_${arch}.exe`
+      return `https://cdn.download.nxtcorex.cn/dl/pclce/pcl2ce/PCL2_CE_Release_${arch}.exe`
     }
 
-    return `https://cdn1.download.nxtcorex.top/dl/pclce/pcl2ce/${version}/PCL2_CE_Release_${arch}.exe`
+    return `https://cdn.download.nxtcorex.cn/dl/pclce/pcl2ce/${version}/PCL2_CE_Release_${arch}.exe`
   }
 
   if (product === 'fcl') {
     if (version === 'latest') {
-      return `https://cdn1.download.nxtcorex.top/dl/fcl/latest/FCL-release-${arch}.apk`
+      return `https://cdn.download.nxtcorex.cn/dl/fcl/latest/FCL-release-${arch}.apk`
     }
 
-    return `https://cdn1.download.nxtcorex.top/dl/fcl/${version}/FCL-release-${version}-${arch}.apk`
+    return `https://cdn.download.nxtcorex.cn/dl/fcl/${version}/FCL-release-${version}-${arch}.apk`
   }
 
   const release = releases.find((item) => item.tag_name === version)
@@ -92,14 +92,14 @@ function getDownloadUrl(product: DownloadSelectorProps['product'], version: stri
     if (asset) {
       return asset.browser_download_url.replace(
         `https://github.com/${sourceRepo}/releases/download/`,
-        `https://cdn1.download.nxtcorex.top/dl/${targetPath}/`
+        `https://cdn.download.nxtcorex.cn/dl/${targetPath}/`
       )
     }
   }
 
   const archSuffix = arch === 'universal' ? '' : `-${arch}`
   const normalizedVersion = normalizeVersionForFilename(version)
-  return `https://cdn1.download.nxtcorex.top/dl/${targetPath}/${version}/ZalithLauncher-${normalizedVersion}${archSuffix}.apk`
+  return `https://cdn.download.nxtcorex.cn/dl/${targetPath}/${version}/ZalithLauncher-${normalizedVersion}${archSuffix}.apk`
 }
 
 export default function DownloadSelector({

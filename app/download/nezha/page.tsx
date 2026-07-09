@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: '哪吒监控 - 服务器监控与运维管理工具下载',
 }
 
-const downloadUrl = 'https://cdn1.download.nxtcorex.top/dl/nezhamonitoring/liunx/install.sh'
+const downloadUrl = 'https://cdn.download.nxtcorex.cn/dl/nezhamonitoring/liunx/install.sh'
 
 export default function NezhaPage() {
   return (

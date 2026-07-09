@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'MG (MobileGlues) 渲染器下载',
 }
 
-const downloadUrl = 'https://cdn1.download.nxtcorex.top/dl/mc/mobileglues/latest/app-release.apk'
+const downloadUrl = 'https://cdn.download.nxtcorex.cn/dl/mc/mobileglues/latest/app-release.apk'
 
 export default function MGPage() {
   return (

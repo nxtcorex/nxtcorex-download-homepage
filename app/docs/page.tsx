@@ -5,16 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const cdnRows = [
   {
-    domain: 'cdn1.download.nxtcorex.top',
-    provider: 'Alibaba Cloud ESA',
-    region: 'Global',
-    status: 'Active',
-  },
-  {
-    domain: 'cdn2.download.nxtcorex.top',
-    provider: 'Cloudflare CDN',
-    region: 'Global',
-    status: 'Active',
+    domain: 'cdn.download.nxtcorex.cn',
+    provider: 'Cloudflare / 阿里云ESA',
+    region: '全球',
+    status: '正常',
   },
 ]
 

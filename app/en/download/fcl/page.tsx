@@ -21,9 +21,9 @@ const archOptions = [
 
 function getDownloadUrl(version: string, arch: string) {
   if (version === 'latest') {
-    return `https://cdn1.download.nxtcorex.top/dl/fcl/latest/FCL-release-${arch}.apk`
+    return `https://cdn.download.nxtcorex.cn/dl/fcl/latest/FCL-release-${arch}.apk`
   }
-  return `https://cdn1.download.nxtcorex.top/dl/fcl/${version}/FCL-release-${version}-${arch}.apk`
+  return `https://cdn.download.nxtcorex.cn/dl/fcl/${version}/FCL-release-${version}-${arch}.apk`
 }
 
 export default function FCLPageEn() {
@@ -67,8 +67,8 @@ export default function FCLPageEn() {
                 </div>
                 <div>
                   <span className="mb-1 block text-xs text-foreground">Accelerated URL:</span>
-                  <a href="https://cdn1.download.nxtcorex.top/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-all.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
-                    https://cdn1.download.nxtcorex.top/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-all.apk
+                  <a href="https://cdn.download.nxtcorex.cn/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-all.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
+                    https://cdn.download.nxtcorex.cn/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-all.apk
                   </a>
                 </div>
               </div>
@@ -82,8 +82,8 @@ export default function FCLPageEn() {
                 </div>
                 <div>
                   <span className="mb-1 block text-xs text-foreground">Accelerated URL:</span>
-                  <a href="https://cdn1.download.nxtcorex.top/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-arm64-v8a.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
-                    https://cdn1.download.nxtcorex.top/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-arm64-v8a.apk
+                  <a href="https://cdn.download.nxtcorex.cn/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-arm64-v8a.apk" className="block break-all font-mono text-xs text-foreground underline-offset-4 hover:underline" target="_blank" rel="noopener noreferrer">
+                    https://cdn.download.nxtcorex.cn/dl/fcl/1.2.3.1/FCL-release-1.2.3.1-arm64-v8a.apk
                   </a>
                 </div>
               </div>
