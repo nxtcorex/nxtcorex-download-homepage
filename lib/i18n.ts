@@ -81,7 +81,6 @@ const dict = {
       docsColumn: '文档',
       quickStart: '快速开始',
       copyright: '© 2026 nxtcorex',
-      openSource: '此网页开源于',
     },
     meta: {
       title: 'nxtcorex下载加速 - 每一字节 极速抵达',
@@ -135,7 +134,6 @@ const dict = {
       docsColumn: 'Docs',
       quickStart: 'Quick Start',
       copyright: '© 2026 nxtcorex',
-      openSource: 'This site is open source on',
     },
     meta: {
       title: 'nxtcorex Download Accelerator - Every Byte, Blazing Fast',

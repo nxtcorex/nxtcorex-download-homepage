@@ -4,54 +4,52 @@
 
 @layer base {
   :root {
-    --background: 220 11% 16%;
-    --foreground: 210 17% 92%;
-    --card: 220 10% 20%;
-    --card-foreground: 210 17% 92%;
-    --popover: 220 10% 20%;
-    --popover-foreground: 210 17% 92%;
-    --primary: 210 17% 92%;
-    --primary-foreground: 220 11% 16%;
-    --secondary: 220 9% 26%;
-    --secondary-foreground: 210 17% 92%;
-    --muted: 220 9% 26%;
-    --muted-foreground: 216 10% 68%;
-    --accent: 220 8% 31%;
-    --accent-foreground: 210 17% 92%;
-    --destructive: 0 64% 38%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 8% 32%;
-    --input: 220 8% 32%;
-    --ring: 210 17% 82%;
-    --shadow-panel: 0 1px 0 hsl(var(--border)), 0 24px 72px rgba(0, 0, 0, 0.26);
-    --shadow-provider-hover: var(--shadow-panel);
-    --globe-filter: drop-shadow(0 26px 78px rgba(0, 0, 0, 0.28));
-    --radius: 0.5rem;
-  }
-
-  .light {
-    --background: 220 14% 93%;
-    --foreground: 224 26% 13%;
-    --card: 0 0% 98%;
-    --card-foreground: 224 26% 13%;
-    --popover: 0 0% 98%;
-    --popover-foreground: 224 26% 13%;
-    --primary: 224 26% 13%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 220 11% 88%;
-    --secondary-foreground: 224 26% 13%;
-    --muted: 220 13% 88%;
-    --muted-foreground: 224 9% 39%;
-    --accent: 210 16% 85%;
-    --accent-foreground: 224 26% 13%;
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 11% 78%;
-    --input: 220 11% 78%;
-    --ring: 224 26% 13%;
+    --background: 0 0% 100%;
+    --foreground: 330 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 330 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 330 0% 3.9%;
+    --primary: 0 0% 9.1%;
+    --primary-foreground: 180 0% 98%;
+    --secondary: 120 0% 96.1%;
+    --secondary-foreground: 0 0% 9.1%;
+    --muted: 120 0% 96.1%;
+    --muted-foreground: 0 0% 45.2%;
+    --accent: 120 0% 96.1%;
+    --accent-foreground: 0 0% 9.1%;
+    --destructive: 357.2 100% 45.3%;
+    --destructive-foreground: 180 0% 98%;
+    --border: 240 0% 89.8%;
+    --input: 240 0% 89.8%;
+    --ring: 0 0% 63%;
+    --radius: 0.625rem;
     --shadow-panel: 0 1px 0 hsl(var(--border)), 0 18px 60px rgba(70, 80, 95, 0.14);
     --shadow-provider-hover: 0 1px 0 hsl(var(--border)), 0 16px 44px rgba(70, 80, 95, 0.12);
-    --globe-filter: drop-shadow(0 28px 80px rgba(70, 80, 95, 0.18));
+  }
+
+  .dark {
+    --background: 330 0% 3.9%;
+    --foreground: 180 0% 98%;
+    --card: 0 0% 9.1%;
+    --card-foreground: 180 0% 98%;
+    --popover: 0 0% 9.1%;
+    --popover-foreground: 180 0% 98%;
+    --primary: 240 0% 89.8%;
+    --primary-foreground: 0 0% 9.1%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 180 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 180 0% 98%;
+    --destructive: 358.7 100% 69.6%;
+    --destructive-foreground: 180 0% 98%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.15;
+    --ring: 0 0% 45.2%;
+    --shadow-panel: 0 1px 0 hsl(var(--border)), 0 24px 72px rgba(0, 0, 0, 0.26);
+    --shadow-provider-hover: var(--shadow-panel);
   }
 
   * {
@@ -63,6 +61,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Ensure scrollbar always visible to prevent layout shift */
+    overflow-y: scroll;
   }
 
   html,
@@ -72,7 +72,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-size: 16px;
     line-height: 1.5;
     background: hsl(var(--background));
@@ -121,10 +121,11 @@
     @apply h-px w-6 bg-border;
   }
 
+  /* --border 在深色模式带 alpha 通道，这里改用前景色控制网格强弱 */
   .panel-grid {
     background-image:
-      linear-gradient(hsl(var(--border) / 0.58) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.58) 1px, transparent 1px);
+      linear-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--foreground) / 0.07) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 

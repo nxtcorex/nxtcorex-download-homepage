@@ -1,124 +1,256 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import createGlobe from 'cobe'
+import { cn } from '@/lib/utils'
 
-const CENTER = 280
-const RADIUS = 250
-const MERIDIANS = 32
-const PATH_POINTS = 24
-const ROTATION_SECONDS = 18
+type Rgb = [number, number, number]
 
-function normalizeDegrees(degrees: number) {
-  return ((((degrees + 180) % 360) + 360) % 360) - 180
+const DEFAULT_MARKERS: [number, number][] = [
+  [37.7595, -122.4367],
+  [40.7128, -74.006],
+  [51.5074, -0.1278],
+  [35.6762, 139.6503],
+  [31.2304, 121.4737],
+  [25.2048, 55.2708],
+  [-33.8688, 151.2093],
+  [-23.5505, -46.6333],
+]
+
+const BASE_THETA = 0.2
+const THETA_LIMIT = 0.35
+
+function clamp(value: number, max: number) {
+  return Math.max(-max, Math.min(max, value))
 }
 
-function meridianPath(degrees: number) {
-  const angle = (normalizeDegrees(degrees) * Math.PI) / 180
-  const xRadius = RADIUS * Math.sin(angle)
-  const points = Array.from({ length: PATH_POINTS + 1 }, (_, index) => {
-    const latitude = Math.PI / 2 - (Math.PI * index) / PATH_POINTS
-    const x = CENTER + xRadius * Math.cos(latitude)
-    const y = CENTER - RADIUS * Math.sin(latitude)
-    return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`
-  })
-  return points.join(' ')
+// 本站的 shadcn 变量存的是 HSL 通道，WebGL 需要 0~1 的 rgb：
+// 先让浏览器解析颜色，再交给 canvas 栅格化成 sRGB 像素读回来。
+function cssColor(varName: string): Rgb {
+  const probe = document.createElement('div')
+  probe.style.color = `hsl(var(${varName}))`
+  probe.style.position = 'fixed'
+  probe.style.opacity = '0'
+  probe.style.pointerEvents = 'none'
+  document.body.appendChild(probe)
+  const color = getComputedStyle(probe).color
+  probe.remove()
+
+  const surface = document.createElement('canvas')
+  surface.width = 1
+  surface.height = 1
+  const ctx = surface.getContext('2d', { willReadFrequently: true })
+  if (!ctx) return [0.5, 0.5, 0.5]
+  ctx.fillStyle = color
+  ctx.fillRect(0, 0, 1, 1)
+  const pixel = ctx.getImageData(0, 0, 1, 1).data
+  return [pixel[0] / 255, pixel[1] / 255, pixel[2] / 255]
 }
 
-function meridianOpacity(degrees: number) {
-  const angle = (normalizeDegrees(degrees) * Math.PI) / 180
-  const depth = Math.cos(angle)
-  if (depth <= 0) return 0
-  return 0.035 + 0.105 * depth
+function dim(rgb: Rgb, factor: number): Rgb {
+  return [
+    Math.min(1, rgb[0] * factor),
+    Math.min(1, rgb[1] * factor),
+    Math.min(1, rgb[2] * factor),
+  ]
 }
 
-// Pre-compute all meridian base degrees
-const meridianBases = Array.from({ length: MERIDIANS }, (_, i) => (360 * i) / MERIDIANS)
+function palette(isDark: boolean) {
+  if (isDark) {
+    return {
+      dark: 1,
+      mapBrightness: 20,
+      opacity: 1,
+      baseColor: cssColor('--muted'),
+      markerColor: cssColor('--primary'),
+      glowColor: dim(cssColor('--muted-foreground'), 0.5),
+    }
+  }
+  return {
+    dark: 0,
+    mapBrightness: 11,
+    opacity: 0.85,
+    baseColor: cssColor('--card'),
+    markerColor: cssColor('--primary'),
+    glowColor: cssColor('--border'),
+  }
+}
 
-export default function Globe() {
-  const pathsRef = useRef<(SVGPathElement | null)[]>([])
-  const rafRef = useRef<number>(0)
-  const startTimeRef = useRef<number>(0)
+function useIsDark() {
+  const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
-    startTimeRef.current = performance.now()
-
-    function animate(now: number) {
-      const elapsed = (now - startTimeRef.current) / 1000 // seconds
-      const rotationDeg = (elapsed / ROTATION_SECONDS) * 360
-
-      meridianBases.forEach((baseDegrees, i) => {
-        const el = pathsRef.current[i]
-        if (!el) return
-        const currentDeg = normalizeDegrees(baseDegrees + rotationDeg)
-        el.setAttribute('d', meridianPath(currentDeg))
-        el.setAttribute('opacity', meridianOpacity(currentDeg).toFixed(3))
-      })
-
-      rafRef.current = requestAnimationFrame(animate)
-    }
-
-    rafRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafRef.current)
+    const sync = () =>
+      setIsDark(document.documentElement.classList.contains('dark'))
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    return () => observer.disconnect()
   }, [])
 
+  return isDark
+}
+
+export interface GlobeProps {
+  className?: string
+  /** WebGL 绘制的逻辑边长（CSS 像素），实际显示尺寸由 className 控制 */
+  size?: number
+  markers?: [number, number][]
+}
+
+export function Globe({
+  className,
+  size = 420,
+  markers = DEFAULT_MARKERS,
+}: GlobeProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null)
+  const isDark = useIsDark()
+  const [inView, setInView] = useState(false)
+
+  const motion = useRef({
+    autoPhi: 0,
+    phiOffset: 0,
+    thetaOffset: 0,
+    dragPhi: 0,
+    dragTheta: 0,
+    velocityPhi: 0,
+    velocityTheta: 0,
+    pointer: null as { x: number; y: number } | null,
+    last: null as { x: number; y: number; t: number } | null,
+    inView: false,
+    reduceMotion: false,
+  })
+
+  useEffect(() => {
+    motion.current.inView = inView
+  }, [inView])
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '120px' }
+    )
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => {
+      motion.current.reduceMotion = query.matches
+    }
+    sync()
+    query.addEventListener('change', sync)
+    return () => query.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const globe = createGlobe(canvas, {
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      width: size,
+      height: size,
+      phi: 0,
+      theta: BASE_THETA,
+      diffuse: 1.5,
+      mapSamples: 16000,
+      markerElevation: 0.01,
+      ...palette(document.documentElement.classList.contains('dark')),
+      markers: markers.map((location) => ({ location, size: 0.025 })),
+    })
+    globeRef.current = globe
+
+    let raf = 0
+    const tick = () => {
+      const m = motion.current
+      if (m.inView) {
+        if (!m.pointer) {
+          if (!m.reduceMotion) m.autoPhi += 0.0028
+          m.phiOffset += m.velocityPhi
+          m.thetaOffset += m.velocityTheta
+          m.velocityPhi *= 0.94
+          m.velocityTheta *= 0.94
+          if (m.thetaOffset < -THETA_LIMIT) {
+            m.thetaOffset += (-THETA_LIMIT - m.thetaOffset) * 0.1
+          } else if (m.thetaOffset > THETA_LIMIT) {
+            m.thetaOffset += (THETA_LIMIT - m.thetaOffset) * 0.1
+          }
+        }
+        globe.update({
+          phi: m.autoPhi + m.phiOffset + m.dragPhi,
+          theta: BASE_THETA + m.thetaOffset + m.dragTheta,
+        })
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      globe.destroy()
+      globeRef.current = null
+    }
+  }, [size, markers])
+
+  useEffect(() => {
+    globeRef.current?.update(palette(isDark))
+  }, [isDark])
+
+  const commitDrag = () => {
+    const m = motion.current
+    m.phiOffset += m.dragPhi
+    m.thetaOffset += m.dragTheta
+    m.dragPhi = 0
+    m.dragTheta = 0
+    m.pointer = null
+    m.last = null
+  }
+
+  const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const m = motion.current
+    m.pointer = { x: e.clientX, y: e.clientY }
+    m.velocityPhi = 0
+    m.velocityTheta = 0
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const m = motion.current
+    if (!m.pointer) return
+    m.dragPhi = (e.clientX - m.pointer.x) / 300
+    m.dragTheta = (e.clientY - m.pointer.y) / 1200
+
+    const now = performance.now()
+    if (m.last) {
+      const dt = Math.max(now - m.last.t, 1)
+      m.velocityPhi = clamp(((e.clientX - m.last.x) / dt) * 0.3, 0.12)
+      m.velocityTheta = clamp(((e.clientY - m.last.y) / dt) * 0.08, 0.08)
+    }
+    m.last = { x: e.clientX, y: e.clientY, t: now }
+  }
+
   return (
-    <div
-      className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] lg:w-[560px] lg:h-[560px] lg:translate-x-20 lg:translate-y-5"
-      style={{ perspective: '1000px' }}
-    >
-      {/* Pulse rings — pointer-events:none so they never block clicks */}
-      <div
-        className="absolute w-[320px] h-[320px] border border-border/60 animate-[pulse-expand_4s_ease-out_infinite]"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
+    <div ref={rootRef} className={cn('relative aspect-square w-full', className)}>
+      <canvas
+        ref={canvasRef}
+        className="size-full cursor-grab touch-pan-y active:cursor-grabbing"
+        onPointerCancel={commitDrag}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={commitDrag}
       />
-      <div
-        className="absolute w-[320px] h-[320px] border border-border/45 animate-[pulse-expand_4s_ease-out_infinite_1.3s]"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
-      />
-      <div
-        className="absolute w-[320px] h-[320px] border border-border/30 animate-[pulse-expand_4s_ease-out_infinite_2.6s]"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}
-      />
-
-      <svg
-        viewBox="0 0 560 560"
-        className="w-full h-full"
-        style={{ filter: 'var(--globe-filter)' }}
-      >
-        <defs>
-          <radialGradient id="globeGrad" cx="38%" cy="35%" r="65%">
-            <stop offset="0%" stopColor="hsl(var(--muted))" />
-            <stop offset="100%" stopColor="hsl(var(--background))" />
-          </radialGradient>
-          <radialGradient id="rimGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="75%" stopColor="transparent" />
-            <stop offset="100%" stopColor="hsl(var(--foreground) / 0.12)" />
-          </radialGradient>
-          <clipPath id="globeClip">
-            <circle cx="280" cy="280" r="250" />
-          </clipPath>
-        </defs>
-
-        <circle cx="280" cy="280" r="250" fill="url(#globeGrad)" />
-        <circle cx="280" cy="280" r="250" fill="url(#rimGrad)" opacity="0.7" />
-
-        <g clipPath="url(#globeClip)">
-          {meridianBases.map((baseDegrees, i) => (
-            <path
-              key={baseDegrees}
-              ref={(el) => { pathsRef.current[i] = el }}
-              d={meridianPath(baseDegrees)}
-              fill="none"
-              opacity={meridianOpacity(baseDegrees).toFixed(3)}
-              stroke="hsl(var(--foreground))"
-              strokeLinecap="round"
-              strokeWidth="0.75"
-            />
-          ))}
-        </g>
-
-        <circle cx="280" cy="280" r="250" fill="none" stroke="hsl(var(--foreground) / 0.1)" strokeWidth="1" />
-      </svg>
     </div>
   )
 }
+
+export default Globe

@@ -1,7 +1,4 @@
-﻿'use client'
-
-import Link from 'next/link'
-import dict, { type Locale, localizedHref } from '@/lib/i18n'
+import dict, { type Locale } from '@/lib/i18n'
 
 interface FooterProps {
   locale?: Locale
@@ -9,51 +6,30 @@ interface FooterProps {
 
 export default function Footer({ locale = 'zh' }: FooterProps) {
   const t = dict[locale].footer
-  const siteName = dict[locale].siteName
-  const siteTagline = dict[locale].siteTagline
 
   return (
-    <footer className="border-t bg-muted/20 py-14">
-      <div className="section-shell">
-        <div className="grid grid-cols-1 gap-12 border-b pb-12 text-center lg:grid-cols-[280px_1fr] lg:gap-20 lg:text-left">
-          <div className="flex flex-col items-center lg:items-start">
-            <span className="mb-4 block text-base text-foreground">
-              {siteName}<span className="text-muted-foreground">{siteTagline}</span>
-            </span>
-            <p className="max-w-[220px] text-[13px] font-light leading-[1.7] text-muted-foreground">
-              {t.description}
-            </p>
-          </div>
-
-          <div className="flex items-center justify-center lg:justify-end">
-            <div>
-              <h4 className="mb-5 text-[11px] uppercase tracking-normal text-muted-foreground">
-                {t.docsColumn}
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link href={localizedHref('/download', locale)} className="text-[13px] font-light text-muted-foreground hover:text-foreground">
-                    {t.quickStart}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-4 pt-8 text-center text-[11px] text-muted-foreground/55 lg:flex-row lg:justify-between lg:text-left">
-          <p>
-            {t.copyright}{' '}
-            <a href="https://beian.miit.gov.cn" target="_blank" className="text-foreground/70 hover:text-foreground">
-              京ICP备2025138063号-2
-            </a>
-          </p>
-          <p>
-            {t.openSource}{' '}
-            <a href="https://github.com/nxtcorex/nxtcorex-download-homepage" target="_blank" className="text-foreground/70 hover:text-foreground">
-              GitHub
-            </a>.
-          </p>
+    <footer className="border-t px-4 py-4 text-sm text-muted-foreground">
+      <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
+        <span>{t.copyright}</span>
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end">
+          <a
+            href="https://beian.miit.gov.cn"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            京ICP备2025138063号-2
+          </a>
+          <a
+            href="https://beian.mps.gov.cn/#/query/webSearch?code=11011402056544"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/备案图标.png" alt="" className="h-4 w-4" />
+            京公网安备11011402056544号
+          </a>
         </div>
       </div>
     </footer>

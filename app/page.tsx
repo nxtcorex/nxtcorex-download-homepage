@@ -1,18 +1,16 @@
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import Stats from '@/components/Stats'
-import Features from '@/components/Features'
 import Terminal from '@/components/Terminal'
 import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
-      <Hero />
-      <Stats />
-      <Features />
-      <Terminal />
+      <div className="flex-1">
+        <Hero />
+        <Terminal />
+      </div>
       <Footer />
     </main>
   )

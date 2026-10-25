@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 
 type Theme = 'light' | 'dark'
 
 function getPreferredTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark'
+  if (typeof window === 'undefined') return 'light'
 
   const storedTheme = window.localStorage.getItem('theme')
   if (storedTheme === 'light' || storedTheme === 'dark') {
@@ -20,48 +19,39 @@ function getPreferredTheme(): Theme {
 }
 
 function applyTheme(theme: Theme) {
-  document.documentElement.classList.toggle('light', theme === 'light')
+  document.documentElement.classList.remove('light', 'dark')
+  document.documentElement.classList.add(theme)
 }
 
-interface ThemeToggleProps {
-  showLabel?: boolean
-  className?: string
-}
-
-export default function ThemeToggle({ showLabel = false, className }: ThemeToggleProps) {
+export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false)
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
-    const nextTheme = getPreferredTheme()
-    setTheme(nextTheme)
-    applyTheme(nextTheme)
+    const isDark = document.documentElement.classList.contains('dark')
+    setTheme(isDark ? 'dark' : 'light')
     setMounted(true)
   }, [])
 
   function toggleTheme() {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark'
+    const nextTheme: Theme = theme === 'dark' ? 'light' : 'dark'
     setTheme(nextTheme)
     window.localStorage.setItem('theme', nextTheme)
     applyTheme(nextTheme)
   }
 
-  const isDark = mounted ? theme === 'dark' : true
-  const label = isDark ? 'Light mode' : 'Dark mode'
-  const Icon = isDark ? Sun : Moon
-
   return (
     <Button
       type="button"
-      variant="ghost"
-      size={showLabel ? 'default' : 'icon'}
-      className={cn(showLabel && 'justify-start text-muted-foreground', className)}
+      variant="outline"
+      size="icon"
       onClick={toggleTheme}
-      aria-label={label}
-      title={label}
+      disabled={!mounted}
+      aria-label="Toggle theme"
+      title="Toggle theme"
     >
-      <Icon className="h-4 w-4" />
-      {showLabel && <span>{label}</span>}
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
     </Button>
   )
 }
