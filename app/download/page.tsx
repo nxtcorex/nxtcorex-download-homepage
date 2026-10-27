@@ -36,6 +36,11 @@ const downloadItems = [
     description: 'MG渲染器。',
     href: '/download/mg',
   },
+  {
+    title: '腕音 (Wanyin)',
+    description: '手表音乐播放器，提供 APK 直连下载。',
+    href: '/download/wanyin',
+  },
 ]
 
 export default function DownloadPage() {

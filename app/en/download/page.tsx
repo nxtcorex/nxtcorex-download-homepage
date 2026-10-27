@@ -42,6 +42,11 @@ const downloadItems = [
     description: 'MobileGlues renderer.',
     href: '/en/download/mg',
   },
+  {
+    title: 'Wanyin',
+    description: 'Music player for smartwatches. Direct APK download links.',
+    href: '/en/download/wanyin',
+  },
 ]
 
 export default function DownloadPageEn() {

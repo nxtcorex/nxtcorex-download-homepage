@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.5,
     },
-    ...['pclce', 'mg', 'zl', 'zl2', 'fcl', 'nezha'].map((slug) => ({
+    ...['pclce', 'mg', 'zl', 'zl2', 'fcl', 'nezha', 'wanyin'].map((slug) => ({
       url: `${baseUrl}/download/${slug}`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
