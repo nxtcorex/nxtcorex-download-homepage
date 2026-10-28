@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Download } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { type Locale } from '@/lib/i18n'
-import { type WanyinRelease } from '@/lib/wanyin'
+import { fetchWanyinReleases, type WanyinRelease } from '@/lib/wanyin'
 
 const uiText = {
   zh: {
@@ -35,9 +35,21 @@ interface WanyinDownloadProps {
   locale?: Locale
 }
 
-export default function WanyinDownload({ releases, locale = 'zh' }: WanyinDownloadProps) {
-  const [selectedVersion, setSelectedVersion] = useState(releases[0]?.version ?? '')
+export default function WanyinDownload({ releases: bakedReleases, locale = 'zh' }: WanyinDownloadProps) {
+  const [releases, setReleases] = useState(bakedReleases)
+  const [selectedVersion, setSelectedVersion] = useState(bakedReleases[0]?.version ?? '')
   const t = uiText[locale]
+
+  useEffect(() => {
+    fetchWanyinReleases().then((fresh) => {
+      if (fresh.length === 0) return
+      setReleases(fresh)
+      setSelectedVersion((current) =>
+        fresh.some((release) => release.version === current) ? current : fresh[0].version
+      )
+    })
+  }, [])
+
   const selected = releases.find((release) => release.version === selectedVersion) ?? releases[0]
 
   if (!selected) return null

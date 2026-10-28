@@ -1,10 +1,10 @@
+export const wanyinReleasesApi = 'https://wanyin.watch.nxtcorex.cn/releases.json'
+
 export interface WanyinRelease {
   version: string
   versionCode: number
   url: string
 }
-
-const releasesApi = 'https://wanyin.watch.nxtcorex.cn/releases.json'
 
 interface ReleasesPayload {
   wear?: {
@@ -16,18 +16,20 @@ interface ReleasesPayload {
   }
 }
 
+export function pickDirectWearReleases(payload: ReleasesPayload): WanyinRelease[] {
+  return (payload.wear?.releases ?? [])
+    .map((release) => ({
+      version: release.version,
+      versionCode: release.versionCode,
+      url: release.channels?.find((channel) => channel.kind === 'direct')?.url ?? '',
+    }))
+    .filter((release) => release.url !== '')
+}
+
 export async function fetchWanyinReleases(): Promise<WanyinRelease[]> {
   try {
-    const res = await fetch(releasesApi)
-    const data: ReleasesPayload = await res.json()
-
-    return (data.wear?.releases ?? [])
-      .map((release) => ({
-        version: release.version,
-        versionCode: release.versionCode,
-        url: release.channels?.find((channel) => channel.kind === 'direct')?.url ?? '',
-      }))
-      .filter((release): release is WanyinRelease => release.url !== '')
+    const res = await fetch(wanyinReleasesApi)
+    return pickDirectWearReleases(await res.json())
   } catch (error) {
     console.error('Failed to fetch wanyin releases:', error)
     return []
